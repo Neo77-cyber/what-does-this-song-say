@@ -84,10 +84,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=60,
+        default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3'),
+        conn_max_age=600,
         ssl_require=True
     )
 }
@@ -145,13 +146,13 @@ env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Spotify Settings
-SPOTIPY_CLIENT_ID = env('SPOTIPY_CLIENT_ID')
-SPOTIPY_CLIENT_SECRET = env('SPOTIPY_CLIENT_SECRET')
-SPOTIPY_REDIRECT_URI = env('SPOTIPY_REDIRECT_URI')
+SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID', 'build_placeholder')
+SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET', 'build_placeholder')
+SPOTIPY_REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI', 'http://localhost:8000/callback/')
 
-# AI Settings
-GEMINI_API_KEY = env('GEMINI_API_KEY')
-GENIUS_ACCESS_TOKEN = env('GENIUS_ACCESS_TOKEN')
+# AI & Lyrics Settings
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'build_placeholder')
+GENIUS_ACCESS_TOKEN = os.getenv('GENIUS_ACCESS_TOKEN', 'build_placeholder')
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
