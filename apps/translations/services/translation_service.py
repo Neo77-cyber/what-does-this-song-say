@@ -25,41 +25,46 @@ def process_song_translation(track_name, artist_name):
 
     # STEP 1: Genius Fetch with specific error handling
     # STEP 1: Genius Fetch (The fixed API-Safe version)
+    # STEP 1: LRCLIB Fetch (Replacement for Genius)
+    lyrics = None
     try:
-        genius = Genius(settings.GENIUS_ACCESS_TOKEN, timeout=15, retries=3)
-        genius.verbose = False 
+        # Search for the track on LRCLIB
+        lrclib_url = "https://lrclib.net/api/search"
+        params = {'track_name': track_name, 'artist_name': artist_name}
         
-        # 1. Search using the plural 'search_songs' to get API-whitelisted results
-        search_results = genius.search_songs(f"{track_name} {artist_name}")
+        # Adding a timeout and a generic User-Agent is good practice
+        headers = {'User-Agent': 'WhatDoesTheSongSay/1.0 (Educational Project)'}
+        response = requests.get(lrclib_url, params=params, headers=headers, timeout=10)
+        response.raise_for_status()
         
-        # 2. Extract the first hit safely
-        if search_results and 'hits' in search_results and len(search_results['hits']) > 0:
-            song_id = search_results['hits'][0]['result']['id']
-            
-            # 3. Use the song_id to fetch the actual lyrics
-            # genius.lyrics() returns a string, NOT a song object
-            lyrics = genius.lyrics(song_id)
-        else:
-            lyrics = None
+        results = response.json()
+        
+        if results:
+            # We look for 'plainLyrics'. If it's missing, we check 'syncedLyrics'
+            # and strip the timestamps, but usually plainLyrics is what we want.
+            # We take the first result that actually has text.
+            for hit in results:
+                if hit.get('plainLyrics'):
+                    lyrics = hit['plainLyrics']
+                    break
+                elif hit.get('syncedLyrics'):
+                    # Basic fallback: keep the text, ignore the [00:12.34] tags
+                    import re
+                    lyrics = re.sub(r'\[.*?\]', '', hit['syncedLyrics']).strip()
+                    break
 
     except Exception as e:
         capture_exception(e)
-        logger.error(f" Genius API Error: {str(e)}") 
-        return {
-            'original': "Connection Error",
-            'translated': "We're having trouble reaching the lyrics source. Try again in a moment!",
-            'status': 'error'
-        }
+        logger.error(f" LRCLIB API Error: {str(e)}") 
+        # We don't return error yet; maybe it's just a temporary blip
     
     if not lyrics:
-        logger.warning(f" Lyrics not found for: {track_name}")
+        logger.warning(f" Lyrics not found on LRCLIB for: {track_name}")
         return {
             'original': "No Lyrics Found",
-            'translated': "I searched high and low but couldn't find the lyrics for this track.",
+            'translated': "I searched the open-source vaults but couldn't find these lyrics. Try a more popular track?",
             'status': 'error'
         }
-
-    # Now 'lyrics' is a string, and the rest of your Step 2, 3, 4 will work!
 
     # STEP 2: Language Detection
     try:
