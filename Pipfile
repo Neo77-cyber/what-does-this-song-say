@@ -17,6 +17,7 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
