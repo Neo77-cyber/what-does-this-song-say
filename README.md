@@ -3,7 +3,8 @@ What Does The Song Say?
 Foreign Song Translator for Spotify
 
 Have you ever being listening to a foreign song you love so much and you just don't get the slangs the artist says in the song. I built this app so i can always enjoy my favorite foreign songs.
- Features
+
+Features
 
     Spotify Integration: One-click OAuth login to sync your library.
 
@@ -11,7 +12,7 @@ Have you ever being listening to a foreign song you love so much and you just do
 
     AI-Powered: High-accuracy translations that preserve the meaning of lyrics.
 
-🛠 Tech Stack
+Tech Stack
 
     Backend: Django (Python 3.9)
 
@@ -23,7 +24,7 @@ Have you ever being listening to a foreign song you love so much and you just do
 
     Deployment: Docker & Render
 
- Local Setup (with Docker)
+Local Setup (with Docker)
 
 The fastest way to get this running locally is using Docker.
 
