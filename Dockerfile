@@ -24,7 +24,5 @@ COPY . /app/
 # Collect static files for production
 RUN python manage.py collectstatic --noinput
 
-# Run the app using Gunicorn
-# Replace 'spotify_translator' with your actual project folder name (where wsgi.py is)
-# Replace the old 'spotify_translator.wsgi' with 'config.wsgi'
+
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:10000"]
