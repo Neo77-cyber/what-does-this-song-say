@@ -1,6 +1,7 @@
 # Django Secrets
 .env
 db.sqlite3
+.cache
 
 
 # Python environment
