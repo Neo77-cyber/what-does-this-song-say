@@ -1,0 +1,20 @@
+# Django Secrets
+.env
+db.sqlite3
+
+
+# Python environment
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+
+# Static/Media (Only ignore if you aren't committing them)
+# node_modules/
+# .DS_Store (Mac specific)
+.DS_Store
+
+# Render/Deployment
+staticfiles/

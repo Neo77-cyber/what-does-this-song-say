@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-container">
+    <div class="hero-content">
+        <h1 class="display-title">What does the song <span class="highlight">say?</span></h1>
+        <p class="hero-subtitle">
+            You're probably like me, You love a song but it's in a foreign lanaguage and you don't know what they are saying
+        </p>
+        
+        <div class="cta-group">
+            <a href="{% url 'users:login' %}" class="btn-spotify">
+                <i class="fab fa-spotify"></i> Connect with Spotify
+            </a>
+            <p class="meta-text">No credit card required. 5 translations daily.</p>
+        </div>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            
+            <h3>Sync Library</h3>
+            <p>Access your Liked Songs instantly.</p>
+        </div>
+        <div class="feature-card">
+            
+            <h3>AI</h3>
+            <p>Translate the lyrics with AI</p>
+        </div>
+        <div class="feature-card">
+            
+            <h3>Save History</h3>
+            <p>Your translated songs are always accessible.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,307 @@
+body {
+            background-color: #121212; /* Spotify Black */
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #282828;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #1DB954;
+            text-decoration: none;
+        }
+
+        .container {
+            padding: 20px;
+        }
+/* Hero Section */
+    .hero-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    .display-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        letter-spacing: -1px;
+    }
+
+    .highlight {
+        color: #1DB954; /* Spotify Green */
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #b3b3b3;
+        max-width: 600px;
+        margin: 0 auto 40px;
+        line-height: 1.6;
+    }
+
+    /* The Button */
+    .btn-spotify {
+        display: inline-flex;
+        align-items: center;
+        background-color: #1DB954;
+        color: white;
+        text-decoration: none;
+        padding: 16px 32px;
+        border-radius: 500px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: transform 0.2s, background-color 0.2s;
+        box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+    }
+
+    .btn-spotify:hover {
+        background-color: #1ed760;
+        transform: scale(1.05);
+        color: white;
+    }
+
+    .meta-text {
+        font-size: 0.85rem;
+        color: #6a6a6a;
+        margin-top: 15px;
+    }
+
+    /* Features Section */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 80px;
+    }
+
+    .feature-card {
+        background: #181818;
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid #282828;
+        transition: border-color 0.3s;
+    }
+
+    .feature-card:hover {
+        border-color: #1DB954;
+    }
+
+    .feature-card .icon {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .feature-card p {
+        color: #b3b3b3;
+        font-size: 0.95rem;
+    }
+/* Dashboard Container */
+.container {
+    max-width: 900px; /* Limits width so it doesn't stretch too far on ultra-wide monitors */
+    margin: 0 auto;
+}
+
+/* One Column List Layout */
+.songs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Small space between rows */
+    margin-top: 30px;
+}
+
+/* The Song Row (Formerly Card) */
+.song-card {
+    background: #181818;
+    border-radius: 8px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center; /* Vertical center */
+    justify-content: space-between; /* Pushes button to the far right */
+    transition: background-color 0.2s;
+    border: 1px solid transparent;
+}
+
+.song-card:hover {
+    background-color: #282828;
+}
+
+/* Left Side: Art + Info */
+.song-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 0; /* Removed margin since it's a row now */
+    flex: 1; /* Takes up available space */
+}
+
+.album-art {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.song-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.song-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.artist-name {
+    color: #b3b3b3;
+    font-size: 0.9rem;
+    margin: 2px 0 0 0;
+}
+
+/* Right Side: Button */
+.translate-form {
+    margin-left: 20px;
+}
+
+.btn-translate {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap; /* Prevents button text from wrapping */
+    transition: transform 0.2s;
+}
+
+.btn-translate:hover {
+    background-color: #1ed760;
+    transform: scale(1.05);
+}
+
+/* Container & Global Center */
+.result-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header centered and clean */
+.song-info {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.song-info h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.song-info p {
+    font-size: 1.2rem;
+    color: #1DB954; /* Spotify Green */
+    margin: 0;
+}
+
+/* The Grid System */
+.lyrics-layout-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+/* Titles for columns */
+h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Original Lyrics (Plain & Clean) */
+.lyrics-pre {
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #aaa;
+    margin: 0;
+}
+
+/* English Translation (The Modern Box) */
+.translation-box {
+    background: rgba(255, 255, 255, 0.05); /* Subtle Glass look */
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+/* Centered Back Button */
+.result-footer {
+    margin-top: 80px;
+    text-align: center;
+    padding-bottom: 60px;
+}
+
+.back-btn {
+    display: inline-block;
+    background: #1DB954;
+    color: white;
+    text-decoration: none;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(29, 185, 84, 0.3);
+}
+
+/* MOBILE RE-ORDERING */
+@media (max-width: 768px) {
+    .lyrics-layout-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .col-english {
+        order: 1; /* English on Top */
+        margin-bottom: 50px;
+    }
+
+    .col-original {
+        order: 2; /* Original on Bottom */
+    }
+    
+    .song-info h2 { font-size: 1.8rem; }
+}

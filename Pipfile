@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-environ = "*"
+lyricsgenius = "*"
+spotipy = "*"
+google-generativeai = "==0.8.3"
+langdetect = "*"
+django-ratelimit = "*"
+social-auth-app-django = "*"
+sentry-sdk = {extras = ["django"], version = "*"}
+dj-database-url = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="user-info">
+        <h1 class="display-title">Your <span class="highlight">Library</span></h1>
+    </div>
+</div>
+
+<div class="songs-grid">
+    {% for song in liked_songs %}
+    <div class="song-card">
+        <div class="song-main">
+            <img src="{{ song.album_art }}" class="album-art" alt="Art">
+            <div class="song-details">
+                <h3 class="song-title">{{ song.name }}</h3>
+                <p class="artist-name">{{ song.artist }}</p>
+            </div>
+        </div>
+        
+        <form action="{% url 'translations:translate' %}" method="POST" class="translate-form">
+            {% csrf_token %}
+            <input type="hidden" name="track_name" value="{{ song.name }}">
+            <input type="hidden" name="artist_name" value="{{ song.artist }}">
+            <button type="submit" class="btn-translate">
+                <span class="btn-text">Translate</span>
+                <span class="loading-spinner" style="display: none;"></span>
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+<script>
+    document.querySelectorAll('.translate-form').forEach(form => {
+        form.addEventListener('submit', function() {
+            const btn = this.querySelector('.btn-translate');
+            const text = btn.querySelector('.btn-text');
+            const spinner = btn.querySelector('.loading-spinner');
+            
+            // Disable button and show spinner
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+            text.innerText = "Processing...";
+            spinner.style.display = 'inline-block';
+        });
+    });
+</script>
+{% endblock %}

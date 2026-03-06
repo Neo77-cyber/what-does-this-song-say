@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="result-container">
+    <header class="song-info">
+        <h2>{{ track_name }}</h2> 
+        <p>{{ artist_name }}</p>
+    </header>
+    
+    <div class="lyrics-layout-wrapper">
+        <div class="col-original">
+            <h3>Original</h3>
+            <pre class="lyrics-pre">{{ original }}</pre>
+        </div>
+        
+        <div class="col-english">
+            <h3>Translation</h3>
+            <div class="translation-box">
+                {{ translated|linebreaks }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="result-footer">
+        <a href="{% url 'translations:dashboard' %}" class="back-btn">
+            Back to Library
+        </a>
+    </div>
+</div>
+{% endblock %}
