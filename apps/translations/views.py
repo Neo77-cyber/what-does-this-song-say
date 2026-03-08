@@ -53,7 +53,6 @@ def translate_song(request):
             return redirect('translations:dashboard')
 
         # 2. DATABASE CHECK (The "Free Pass")
-        # Use __iexact to ensure "Loi" matches "loi"
         existing = SavedTranslation.objects.filter(
             track_name__iexact=track, 
             artist_name__iexact=artist
@@ -68,12 +67,12 @@ def translate_song(request):
                 'translated': existing.translated_lyrics,
             })
 
-        # 3. DAILY QUOTA CHECK (Only if NOT in database)
+        # 3. DAILY QUOTA CHECK 
         usage, _ = DailyUsage.objects.get_or_create(user=user, date=timezone.now().date())
         if usage.count >= 10:
             logger.info(f"🛑 Quota reached for: {user.username}")
             # Corrected message to match the '90' limit
-            messages.info(request, "You've hit your daily limit! Come back tomorrow.")
+            messages.info(request, "You've hit your 10 daily limit! Please, come back tomorrow.")
             return redirect('translations:dashboard')
 
         # 4. RUN THE SERVICE (Gemini API Call)
@@ -84,7 +83,6 @@ def translate_song(request):
             return redirect('translations:dashboard')
 
         # 5. SUCCESS: Save to DB & Increment usage
-        # This makes the song "Free" for the next person
         SavedTranslation.objects.get_or_create(
             track_name=track,
             artist_name=artist,
