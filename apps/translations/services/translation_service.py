@@ -56,13 +56,22 @@ def process_song_translation(track_name, artist_name):
     except Exception as e:
         capture_exception(e)
         logger.error(f" LRCLIB API Error: {str(e)}") 
+        return {
+
+            'original': "Connection Error",
+
+            'translated': "We're having trouble reaching the lyrics source. Try again in a moment!",
+
+            'status': 'error'
+
+            } 
         # We don't return error yet; maybe it's just a temporary blip
     
     if not lyrics:
         logger.warning(f" Lyrics not found on LRCLIB for: {track_name}")
         return {
             'original': "No Lyrics Found",
-            'translated': "I searched the open-source vaults but couldn't find these lyrics. Try a more popular track?",
+            'translated': "I searched everywhere I couldn't find these lyrics. Try a more popular track?",
             'status': 'error'
         }
 

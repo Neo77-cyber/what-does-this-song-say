@@ -37,7 +37,7 @@ def dashboard_view(request):
 
 
 @login_required
-@ratelimit(key='user', rate='2/m', block=False)
+@ratelimit(key='user_or_ip', rate='10/m', method='POST', block=False)
 def translate_song(request):
     if request.method == "POST":
         user = request.user
@@ -48,14 +48,14 @@ def translate_song(request):
         # This catches people clicking 10 times in 5 seconds
         if getattr(request, 'limited', False):
             logger.warning(f"🚫 Burst limit hit by user: {user.username}")
-            messages.warning(request, "Whoa there! One song at a time—let's let the AI breathe.")
+            messages.warning(request, "Whoa there! One song at a time. Rate limit has been exceeded")
             return redirect('translations:dashboard')
 
         # 2. DAILY QUOTA CHECK
         usage, _ = DailyUsage.objects.get_or_create(user=user, date=timezone.now().date())
-        if usage.count >= 50:
+        if usage.count >= 10:
             logger.info(f"🛑 Quota reached for: {user.username}")
-            messages.info(request, "You've hit your 5 daily translations! Come back tomorrow or upgrade for more.")
+            messages.info(request, "You've hit your 5 daily translations! Come back tomorrow or Buy me a a coffee to get more.")
             return redirect('translations:dashboard')
 
         # 3. RUN THE SERVICE

@@ -216,7 +216,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
 
 sentry_sdk.init(
-    dsn=os.getenv('SENTRY_DSN'), # Get this from your .env
+    dsn=os.getenv('SENTRY_DSN'), 
     integrations=[DjangoIntegration()],
     
     # Set traces_sample_rate to 1.0 to capture 100%
@@ -228,3 +228,6 @@ sentry_sdk.init(
 )
 
 LOGIN_URL = 'users:home'
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
