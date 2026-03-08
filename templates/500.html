@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downtime</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .error-container {
+            max-width: 400px;
+            padding: 20px;
+        }
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #b3b3b3;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .btn-retry {
+            background-color: #1DB954;
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        .btn-retry:hover {
+            transform: scale(1.05);
+            background-color: #1ed760;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Don't fret</h1>
+        <p>Our servers are a bit down, This is not a total breakdown.</p>
+        <a href="/" class="btn-retry">Try Again</a>
+    </div>
+</body>
+</html>

@@ -268,7 +268,17 @@ body {
     .hero-container {
         padding: 60px 20px; 
     }
-    
+
+    .display-title {
+        font-size: 3.2rem; 
+        
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        
+    }
+
     .song-card {
         padding: 12px 15px;
         gap: 10px;
