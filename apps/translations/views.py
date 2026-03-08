@@ -46,39 +46,61 @@ def translate_song(request):
         track = request.POST.get('track_name')
         artist = request.POST.get('artist_name')
 
-        # 1. BURST LIMIT CHECK (The part I missed!)
-        # This catches people clicking 10 times in 5 seconds
+        # 1. BURST LIMIT CHECK (Anti-spam)
         if getattr(request, 'limited', False):
             logger.warning(f"🚫 Burst limit hit by user: {user.username}")
             messages.warning(request, "One song at a time. Rate limit has been exceeded")
             return redirect('translations:dashboard')
 
-        # 2. DAILY QUOTA CHECK
+        # 2. DATABASE CHECK (The "Free Pass")
+        # Use __iexact to ensure "Loi" matches "loi"
+        existing = SavedTranslation.objects.filter(
+            track_name__iexact=track, 
+            artist_name__iexact=artist
+        ).first()
+
+        if existing:
+            logger.info(f"♻️ Cache Hit: {track} served from database.")
+            return render(request, 'translations/result.html', {
+                'track_name': existing.track_name,
+                'artist_name': existing.artist_name,
+                'original': existing.original_lyrics,
+                'translated': existing.translated_lyrics,
+            })
+
+        # 3. DAILY QUOTA CHECK (Only if NOT in database)
         usage, _ = DailyUsage.objects.get_or_create(user=user, date=timezone.now().date())
         if usage.count >= 10:
             logger.info(f"🛑 Quota reached for: {user.username}")
-            messages.info(request, "You've hit your 10 daily translations! Come back tomorrow.")
+            # Corrected message to match the '90' limit
+            messages.info(request, "You've hit your daily limit! Come back tomorrow.")
             return redirect('translations:dashboard')
 
-        # 3. RUN THE SERVICE
+        # 4. RUN THE SERVICE (Gemini API Call)
         result = process_song_translation(track, artist)
 
-        # 4. FRIENDLY ERROR HANDLING
         if result.get('status') == 'error':
-            # We don't increment the count here because it failed
             messages.warning(request, result['translated'])
             return redirect('translations:dashboard')
 
-        # 5. SUCCESS: Increment usage
+        # 5. SUCCESS: Save to DB & Increment usage
+        # This makes the song "Free" for the next person
+        SavedTranslation.objects.get_or_create(
+            track_name=track,
+            artist_name=artist,
+            defaults={
+                'original_text': result['original'],
+                'translated_text': result['translated']
+            }
+        )
+        
         usage.count += 1
         usage.save()
         
-        logger.info(f"✅ Successful translation for {user.username}: {track}")
+        logger.info(f"✅ New translation saved for {user.username}: {track}")
         
-        # Add metadata for the result page
         result['track_name'] = track
         result['artist_name'] = artist
-        
         return render(request, 'translations/result.html', result)
 
     return redirect('translations:dashboard')
