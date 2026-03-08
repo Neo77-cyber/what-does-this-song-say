@@ -21,10 +21,12 @@ def dashboard_view(request):
     # 2. If no token, they shouldn't be here! Redirect to login
     if not token_info:
         return redirect('users:login')
+    
+    force_refresh = request.GET.get('refresh') == 'true'
         
     # 3. Use the service to get real songs
     try:
-        liked_songs = get_user_library(token_info)
+        liked_songs = get_user_library(token_info, refresh=force_refresh)
     except Exception as e:
         # If the token expired or something went wrong, clear session and login again
         print(f"Error fetching Spotify data: {e}")

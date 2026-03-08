@@ -96,14 +96,14 @@ def process_song_translation(track_name, artist_name):
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
 
     try:
-        response = requests.post(url, headers={'Content-Type': 'application/json'}, json=payload, timeout=30)
+        response = requests.post(url, headers={'Content-Type': 'application/json'}, json=payload, timeout=60)
         response.raise_for_status()
         translated_text = response.json()['candidates'][0]['content']['parts'][0]['text']
     except Exception as e:
         logger.error(f"❌ Gemini Failure: {str(e)}") 
         return {
             'original': "AI Busy",
-            'translated': "Our AI translator is currently over-caffeinated. Give it a minute to cool down and try again!",
+            'translated': "Our AI translator is currently over-caffeinated.Please give it a minute to cool down and try again",
             'status': 'error'
         }
 

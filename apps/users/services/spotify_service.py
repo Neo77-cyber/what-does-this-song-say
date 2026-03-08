@@ -12,7 +12,7 @@ def get_spotify_oauth():
         show_dialog=True
     )
 
-def get_user_library(token_info):
+def get_user_library(token_info, refresh=False):
     """Fetches the user's 20 most recent 'Liked Songs'."""
     sp = spotipy.Spotify(auth=token_info['access_token'])
     results = sp.current_user_saved_tracks(limit=20)

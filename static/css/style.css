@@ -115,10 +115,42 @@ body {
         font-size: 0.95rem;
     }
 
-/* Dashboard Container */
+/* DASHBOARD */
 .container {
     max-width: 900px; 
     margin: 0 auto;
+}
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+
+.refresh-link {
+    color: #b3b3b3;
+    text-decoration: none !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.refresh-link:hover {
+    color: #1DB954; 
+}
+
+.refresh-icon {
+    font-size: 1.1rem;
+    display: inline-block;
+}
+
+.refresh-link:hover .refresh-icon {
+    transform: rotate(180deg);
+    transition: transform 0.4s ease;
 }
 
 
@@ -202,7 +234,7 @@ body {
     transform: scale(1.05);
 }
 
-
+/* RESULT*/
 .result-container {
     max-width: 1200px; 
     margin: 0 auto;
