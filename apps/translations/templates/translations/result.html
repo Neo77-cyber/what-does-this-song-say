@@ -3,6 +3,12 @@
 
 {% block content %}
 <div class="result-container">
+    <div class="top-actions">
+        <a href="{% url 'translations:dashboard' %}" class="back-link">
+            <span class="icon">←</span> Back to Library
+        </a>
+    </div>
+
     <header class="song-info">
         <h2>{{ track_name }}</h2> 
         <p>{{ artist_name }}</p>
@@ -13,19 +19,13 @@
             <h3>Original</h3>
             <pre class="lyrics-pre">{{ original }}</pre>
         </div>
-        
+
         <div class="col-english">
             <h3>Translation</h3>
             <div class="translation-box">
                 {{ translated|linebreaks }}
             </div>
         </div>
-    </div>
-    
-    <div class="result-footer">
-        <a href="{% url 'translations:dashboard' %}" class="back-btn">
-            Back to Library
-        </a>
     </div>
 </div>
 {% endblock %}

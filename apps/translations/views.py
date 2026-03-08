@@ -53,9 +53,9 @@ def translate_song(request):
 
         # 2. DAILY QUOTA CHECK
         usage, _ = DailyUsage.objects.get_or_create(user=user, date=timezone.now().date())
-        if usage.count >= 10:
+        if usage.count >= 20:
             logger.info(f"🛑 Quota reached for: {user.username}")
-            messages.info(request, "You've hit your 5 daily translations! Come back tomorrow or Buy me a a coffee to get more.")
+            messages.info(request, "You've hit your 20 daily translations! Come back tomorrow or Buy me a a coffee to get more.")
             return redirect('translations:dashboard')
 
         # 3. RUN THE SERVICE
