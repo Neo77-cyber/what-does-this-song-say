@@ -48,7 +48,7 @@ def translate_song(request):
         # This catches people clicking 10 times in 5 seconds
         if getattr(request, 'limited', False):
             logger.warning(f"🚫 Burst limit hit by user: {user.username}")
-            messages.warning(request, "Whoa there! One song at a time. Rate limit has been exceeded")
+            messages.warning(request, "One song at a time. Rate limit has been exceeded")
             return redirect('translations:dashboard')
 
         # 2. DAILY QUOTA CHECK
