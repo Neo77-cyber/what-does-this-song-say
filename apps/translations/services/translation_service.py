@@ -76,23 +76,36 @@ def process_song_translation(track_name, artist_name):
         }
 
     # STEP 2: Language Detection
-    try:
-        results = detect_langs(lyrics)
-        if results[0].lang == 'en' and results[0].prob > 0.85:
-            return {
-                'original': lyrics,
-                'translated': " This song is already in English! No translation needed.",
-                'status': 'success'
-            }
-    except Exception as e:
-        logger.warning(f" Language detection failed: {e}")
+    # should_translate = True
+    # try:
+    #     results = detect_langs(lyrics)
+    #     # Only skip Gemini if it is OVERWHELMINGLY English (98%+)
+    #     # If there is even a 5% chance of another language, let Gemini look at it.
+    #     if results[0].lang == 'en' and results[0].prob > 0.98:
+    #         should_translate = False
+    #         return {
+    #             'original': lyrics,
+    #             'translated': "This song is already in English! No translation needed.",
+    #             'status': 'success'
+    #         }
+    # except Exception as e:
+    #     logger.warning(f" Language detection failed, proceeding with translation: {e}")
 
     # STEP 3: Gemini Translation
+    
     logger.info(" Sending to Gemini...")
     api_key = settings.GEMINI_API_KEY
     url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={api_key}"
     
-    prompt = f"Translate the song '{track_name}' by '{artist_name}' to English. Lyrics: {lyrics}"
+    prompt = (
+    f"You are a multilingual music expert. Translate the song '{track_name}' by '{artist_name}' into English.\n\n"
+    f"STRICT RULES:\n"
+    f"1. For FOREIGN languages (French, Spanish, Yoruba, Swahili, etc.): Provide a clear English translation.\n"
+    f"2. For NIGERIAN PIDGIN (e.g., 'wetin', 'no lele', 'chopping money', 'shayo'): DO NOT translate it. Keep it exactly as written.\n"
+    f"3. For STANDARD ENGLISH: Keep it exactly as written.\n"
+    f"4. Maintain the original line-by-line song structure.\n\n"
+    f"Lyrics:\n{lyrics}"
+)
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
 
     try:
