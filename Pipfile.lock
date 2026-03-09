@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "acff48b6c6165b72b7ed6cddf136f302f912943dabfc35d74f0c560438df38d1"
+            "sha256": "fb72ea607ebbfd5a9a1963430a437368cc45e529080b3f94797e199e7da5d9a6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -392,11 +392,11 @@
         },
         "google-auth": {
             "hashes": [
-                "sha256:2e2a537873d449434252a9632c28bfc268b0adb1e53f9fb62afc5333a975903f",
-                "sha256:4f7e706b0cd3208a3d940a19a822c37a476ddba5450156c3e6624a71f7c841ce"
+                "sha256:9cc2d9259d3700d7a257681f81052db6737495a1a46b610597f4b8bafe5286ae",
+                "sha256:f893ef7307f19cf53700b7e2f61b5a6affe3aa0edf9943b13788920ab92d8d87"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==2.48.0"
+            "version": "==2.49.0"
         },
         "google-auth-httplib2": {
             "hashes": [
@@ -416,11 +416,11 @@
         },
         "googleapis-common-protos": {
             "hashes": [
-                "sha256:4299c5a82d5ae1a9702ada957347726b167f9f8d1fc352477702a1e851ff4038",
-                "sha256:e55a601c1b32b52d7a3e65f43563e2aa61bcd737998ee672ac9b951cd49319f5"
+                "sha256:778d07cd4fbeff84c6f7c72102f0daf98fa2bfd3fa8bea426edc545588da0b5a",
+                "sha256:dfdaaa2e860f242046be561e6d6cb5c5f1541ae02cfbcb034371aadb2942b4e8"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==1.72.0"
+            "version": "==1.73.0"
         },
         "grpcio": {
             "hashes": [
@@ -934,6 +934,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==0.5.5"
+        },
+        "tenacity": {
+            "hashes": [
+                "sha256:1169d376c297e7de388d18b4481760d478b0e99a777cad3a9c86e556f4b697cb",
+                "sha256:f77bf36710d8b73a50b2dd155c97b870017ad21afe6ab300326b0371b3b05138"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==9.1.2"
         },
         "tqdm": {
             "hashes": [

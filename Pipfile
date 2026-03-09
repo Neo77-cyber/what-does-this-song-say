@@ -18,6 +18,7 @@ psycopg2-binary = "*"
 python-dotenv = "*"
 gunicorn = "*"
 whitenoise = "*"
+tenacity = "*"
 
 [dev-packages]
 

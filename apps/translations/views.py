@@ -82,16 +82,6 @@ def translate_song(request):
             messages.warning(request, result['translated'])
             return redirect('translations:dashboard')
 
-        # 5. SUCCESS: Save to DB & Increment usage
-        SavedTranslation.objects.get_or_create(
-            track_name=track,
-            artist_name=artist,
-            defaults={
-                'original_text': result['original'],
-                'translated_text': result['translated']
-            }
-        )
-        
         usage.count += 1
         usage.save()
         
