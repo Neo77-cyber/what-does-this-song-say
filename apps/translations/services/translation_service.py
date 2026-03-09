@@ -8,14 +8,14 @@ from ..models import SavedTranslation
 logger = logging.getLogger(__name__)
 
 GEMINI_MODELS = [
-    "gemini-2.0-flash",
-    "gemini-2.0-flash-lite",
-    "gemini-2.5-flash-preview-04-17",
+    "gemini-3.1-flash-lite-preview",  
+    "gemini-1.5-flash",              
+    "gemini-2.0-flash-exp",          
 ]
 
 
 def _get_gemini_url(model, api_key):
-    return f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key={api_key}"
+    return f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
 
 
 def is_429_error(exception):
@@ -25,7 +25,7 @@ def is_429_error(exception):
 
 @retry(
     retry=retry_if_exception(is_429_error),
-    wait=wait_exponential(multiplier=2, min=5, max=60),
+    wait=wait_exponential(multiplier=2, min=2, max=10),
     stop=stop_after_attempt(4),
     reraise=True
 )
