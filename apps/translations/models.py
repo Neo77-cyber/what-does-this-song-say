@@ -3,14 +3,14 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class SavedTranslation(models.Model):
-    # Unique together means we never store "Blinding Lights - The Weeknd" twice
+    
     track_name = models.CharField(max_length=255)
     artist_name = models.CharField(max_length=255)
     
     original_lyrics = models.TextField()
     translated_lyrics = models.TextField()
     
-    # Track when it was first translated
+    
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

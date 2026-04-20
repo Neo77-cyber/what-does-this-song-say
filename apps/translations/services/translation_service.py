@@ -38,7 +38,7 @@ def _call_gemini_api(url, payload):
 def process_song_translation(track_name, artist_name):
     logger.info(f"Starting translation for: {track_name} by {artist_name}")
 
-    # STEP 0: Cache Check
+    
     cached = SavedTranslation.objects.filter(
         track_name__iexact=track_name,
         artist_name__iexact=artist_name
@@ -48,7 +48,7 @@ def process_song_translation(track_name, artist_name):
         logger.info(f"Cache Hit for: {track_name}")
         return {'original': cached.original_lyrics, 'translated': cached.translated_lyrics, 'status': 'success'}
 
-    # STEP 1: LRCLIB Fetch
+    
     lyrics = None
     try:
         lrclib_url = "https://lrclib.net/api/search"
@@ -82,7 +82,7 @@ def process_song_translation(track_name, artist_name):
             'status': 'error'
         }
 
-    # STEP 2: Gemini Translation (with model fallback)
+    
     logger.info("Sending to Gemini...")
     api_key = settings.GEMINI_API_KEY
 
@@ -106,34 +106,34 @@ def process_song_translation(track_name, artist_name):
             url = _get_gemini_url(model, api_key)
             data = _call_gemini_api(url, payload)
             translated_text = data['candidates'][0]['content']['parts'][0]['text']
-            logger.info(f"✅ Translated using {model}")
+            logger.info(f" Translated using {model}")
             break
         except requests.exceptions.HTTPError as e:
             status = e.response.status_code
             if status == 429:
-                logger.warning(f"⚠️ {model} rate limited, trying next model...")
+                logger.warning(f" {model} rate limited, trying next model...")
             elif status == 404:
-                logger.warning(f"⚠️ {model} not found (deprecated?), trying next model...")
+                logger.warning(f" {model} not found (deprecated?), trying next model...")
             else:
-                logger.error(f"❌ Gemini HTTP error on {model}: {str(e)}")
+                logger.error(f" Gemini HTTP error on {model}: {str(e)}")
                 last_error = e
-                break  # Other errors won't be fixed by switching models
+                break   
             last_error = e
             continue
         except Exception as e:
-            logger.error(f"❌ Unexpected error on {model}: {str(e)}")
+            logger.error(f" Unexpected error on {model}: {str(e)}")
             last_error = e
             break
 
     if translated_text is None:
-        logger.error(f"❌ All Gemini models failed. Last error: {str(last_error)}")
+        logger.error(f" All Gemini models failed. Last error: {str(last_error)}")
         return {
             'original': lyrics,
             'translated': "Our AI is currently over-caffeinated. Please wait a minute and try again.",
             'status': 'error'
         }
 
-    # STEP 3: Save & Return
+    
     SavedTranslation.objects.update_or_create(
         track_name=track_name, artist_name=artist_name,
         defaults={'original_lyrics': lyrics, 'translated_lyrics': translated_text}

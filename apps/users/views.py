@@ -9,7 +9,7 @@ import spotipy
 def home_view(request):
 
     if request.user.is_authenticated:
-        # If they are logged in, send them straight to the songs!
+      
         return redirect('translations:dashboard')
 
     return render(request, 'users/home.html')
@@ -30,21 +30,20 @@ def callback_view(request):
         request.session['spotify_token'] = token_info
         
         
-        # Get user info from Spotify to identify who this is
+      
         
         sp = spotipy.Spotify(auth=token_info['access_token'])
         spotify_user = sp.current_user()
         
-        # Find or create a Django user for this Spotify account
-        # We use the Spotify ID as the username
+        
         user, created = User.objects.get_or_create(
             username=f"spotify_{spotify_user['id']}",
             defaults={'email': spotify_user.get('email', '')}
         )
         
-        # This is the magic line that makes request.user work!
+        
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        # --- NEW CODE END ---
+       
         
         return redirect('translations:dashboard')
     
@@ -54,6 +53,6 @@ from django.contrib.auth import logout as django_logout
 
 def logout_view(request):
     django_logout(request)
-    # Clear Spotify token from session too
+    
     request.session.flush() 
     return redirect('users:home')

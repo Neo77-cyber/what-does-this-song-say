@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'local-dev-key-123')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['what-does-this-song-say.onrender.com', 'localhost', 
@@ -132,12 +132,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# This is where you put your CSS during development
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# This is where Django will "collect" all files for Render production
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -150,12 +149,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Spotify Settings
+
 SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID', 'build_placeholder')
 SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET', 'build_placeholder')
 SPOTIPY_REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI', 'http://localhost:8000/callback/')
 
-# AI & Lyrics Settings
+
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'build_placeholder')
 GENIUS_ACCESS_TOKEN = os.getenv('GENIUS_ACCESS_TOKEN', 'build_placeholder')
 
@@ -198,11 +197,11 @@ LOGGING = {
         },
     },
     'loggers': {
-        '': {  # The 'root' logger - catches everything
+        '': {  
             'handlers': ['console'],
             'level': 'INFO',
         },
-        'apps.translations': {  # Specifically for your translation app
+        'apps.translations': {  
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
@@ -220,11 +219,10 @@ sentry_sdk.init(
     dsn=os.getenv('SENTRY_DSN'), 
     integrations=[DjangoIntegration()],
     
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
+    
     traces_sample_rate=1.0,
     
-    # If you want to send users' info (like email) with the error
+   
     send_default_pii=True
 )
 
