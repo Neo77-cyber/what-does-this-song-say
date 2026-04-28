@@ -8,10 +8,9 @@ from ..models import SavedTranslation
 logger = logging.getLogger(__name__)
 
 GEMINI_MODELS = [
-    "gemini-2.0-flash",               
-    "gemini-3.1-flash-lite-preview",  
-    "gemini-2.5-flash-lite",          
-]
+    "gemini-2.5-flash",      
+]         
+
 
 
 def _get_gemini_url(model, api_key):
@@ -23,14 +22,14 @@ def is_429_error(exception):
            exception.response.status_code == 429
 
 
-@retry(
-    retry=retry_if_exception(is_429_error),
-    wait=wait_exponential(multiplier=1, min=1, max=4),
-    stop=stop_after_attempt(1),
-    reraise=True
-)
+
 def _call_gemini_api(url, payload):
-    response = requests.post(url, headers={'Content-Type': 'application/json'}, json=payload, timeout=60)
+    response = requests.post(
+        url, 
+        headers={'Content-Type': 'application/json'}, 
+        json=payload, 
+        timeout=60
+    )
     response.raise_for_status()
     return response.json()
 
@@ -124,11 +123,30 @@ def process_song_translation(track_name, artist_name):
             continue  
 
     if translated_text is None:
-        logger.error(f" All Gemini models failed. Last error: {str(last_error)}")
+        if isinstance(last_error, requests.exceptions.HTTPError):
+            status = last_error.response.status_code
+            if status == 429:
+                sentry_message = "Gemini rate limit exhausted across all models (429)"
+                user_message = "Our AI is currently experiencing a traffic spike. Please wait a minute and try again."
+            elif status == 404:
+                sentry_message = "All Gemini models returned 404 - check model names"
+                user_message = "Our AI is currently experiencing a traffic spike. Please wait a minute and try again."
+            elif status == 403:
+                sentry_message = "Gemini API key lacks permission for all models (403)"
+                user_message = "Our AI is currently experiencing a traffic spike. Please wait a minute and try again."
+            else:
+                sentry_message = f"Gemini HTTP error across all models: {status}"
+                user_message = "Our AI is currently experiencing a traffic spike. Please wait a minute and try again."
+        else:
+            sentry_message = f"Gemini non-HTTP failure: {type(last_error).__name__}: {str(last_error)}"
+            user_message = "Our AI is currently experiencing a traffic spike. Please wait a minute and try again."
+
+        logger.error(f"All Gemini models failed — {sentry_message}")
         return {
             'original': lyrics,
-            'translated': "Our AI is currently over-caffeinated. Please wait a minute and try again.",
-            'status': 'error'
+            'translated': user_message,
+            'status': 'error',
+            'error_type': sentry_message,  
         }
 
     
