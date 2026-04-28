@@ -8,9 +8,9 @@ from ..models import SavedTranslation
 logger = logging.getLogger(__name__)
 
 GEMINI_MODELS = [
+    "gemini-2.0-flash",               
     "gemini-3.1-flash-lite-preview",  
-    "gemini-1.5-flash",              
-    "gemini-2.0-flash-exp",          
+    "gemini-2.5-flash-lite",          
 ]
 
 
@@ -25,8 +25,8 @@ def is_429_error(exception):
 
 @retry(
     retry=retry_if_exception(is_429_error),
-    wait=wait_exponential(multiplier=2, min=2, max=10),
-    stop=stop_after_attempt(4),
+    wait=wait_exponential(multiplier=1, min=1, max=4),
+    stop=stop_after_attempt(1),
     reraise=True
 )
 def _call_gemini_api(url, payload):
@@ -106,24 +106,22 @@ def process_song_translation(track_name, artist_name):
             url = _get_gemini_url(model, api_key)
             data = _call_gemini_api(url, payload)
             translated_text = data['candidates'][0]['content']['parts'][0]['text']
-            logger.info(f" Translated using {model}")
+            logger.info(f"Translated using {model}")
             break
         except requests.exceptions.HTTPError as e:
             status = e.response.status_code
             if status == 429:
-                logger.warning(f" {model} rate limited, trying next model...")
+                logger.warning(f"{model} rate limited, trying next model...")
             elif status == 404:
-                logger.warning(f" {model} not found (deprecated?), trying next model...")
+                logger.warning(f"{model} not found (deprecated?), trying next model...")
             else:
-                logger.error(f" Gemini HTTP error on {model}: {str(e)}")
-                last_error = e
-                break   
+                logger.error(f"Gemini HTTP error on {model}: {str(e)}")
             last_error = e
-            continue
+            continue  
         except Exception as e:
-            logger.error(f" Unexpected error on {model}: {str(e)}")
+            logger.error(f"Unexpected error on {model}: {str(e)}")
             last_error = e
-            break
+            continue  
 
     if translated_text is None:
         logger.error(f" All Gemini models failed. Last error: {str(last_error)}")
