@@ -6,4 +6,5 @@ app_name = 'translations'
 urlpatterns = [
     path('', views.dashboard_view, name='dashboard'),
     path('translate/', views.translate_song, name='translate'),
+    path("health/", views.health_check, name="health_check"),
 ]

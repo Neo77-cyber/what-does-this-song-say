@@ -92,3 +92,6 @@ def translate_song(request):
         return render(request, 'translations/result.html', result)
 
     return redirect('translations:dashboard')
+
+def health_check(request):
+    return HttpResponse("ok", status=200)
