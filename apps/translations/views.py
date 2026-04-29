@@ -7,6 +7,7 @@ from django_ratelimit.decorators import ratelimit
 from .models import DailyUsage, SavedTranslation
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 
 logger = logging.getLogger(__name__)
