@@ -19,6 +19,7 @@ python-dotenv = "*"
 gunicorn = "*"
 whitenoise = "*"
 tenacity = "*"
+django-maintenance-mode = "*"
 
 [dev-packages]
 

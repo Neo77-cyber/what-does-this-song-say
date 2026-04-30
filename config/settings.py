@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'social_django',
     'apps.users',
     'apps.translations',
+    'maintenance_mode',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'maintenance_mode.middleware.MaintenanceModeMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -75,10 +77,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'maintenance_mode.context_processors.maintenance_mode',
             ],
         },
     },
 ]
+
+MAINTENANCE_MODE_TEMPLATE = "users/503.html"
 
 WSGI_APPLICATION = 'config.wsgi.application'
 

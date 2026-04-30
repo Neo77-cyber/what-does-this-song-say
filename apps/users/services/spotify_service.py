@@ -1,14 +1,21 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from django.conf import settings
+from spotipy.cache_handler import DjangoSessionCacheHandler
 
 
-def get_spotify_oauth():
+
+
+
+def get_spotify_oauth(request):
+
+    cache_handler = DjangoSessionCacheHandler(request)
     return SpotifyOAuth(
         client_id=settings.SPOTIPY_CLIENT_ID,
         client_secret=settings.SPOTIPY_CLIENT_SECRET,
         redirect_uri=settings.SPOTIPY_REDIRECT_URI,
         scope="user-library-read user-read-recently-played",
+        cache_handler=cache_handler,
         show_dialog=True
     )
 

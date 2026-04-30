@@ -16,13 +16,13 @@ def home_view(request):
 
 def login_view(request):
     """Redirects the user to the Spotify Authorization page."""
-    auth_manager = get_spotify_oauth()
+    auth_manager = get_spotify_oauth(request)
     auth_url = auth_manager.get_authorize_url()
     return redirect(auth_url)
 
 
 def callback_view(request):
-    auth_manager = get_spotify_oauth()
+    auth_manager = get_spotify_oauth(request)
     code = request.GET.get('code')
     
     if code:
