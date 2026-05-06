@@ -4,6 +4,14 @@ from .services.spotify_service import get_spotify_oauth
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 import spotipy
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+import json
+from .models import Waitlist
+
+from maintenance_mode.decorators import force_maintenance_mode_off
+
+from django.http import JsonResponse
 
 
 def home_view(request):
@@ -56,3 +64,29 @@ def logout_view(request):
     
     request.session.flush() 
     return redirect('users:home')
+
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+@force_maintenance_mode_off 
+def waitlist_signup(request):
+    try:
+        data = json.loads(request.body)
+        email = data.get('email')
+        
+        if not email:
+            return JsonResponse({'status': 'error', 'message': 'Email is required'}, status=400)
+        
+        obj, created = Waitlist.objects.get_or_create(email=email)
+        
+        if created:
+            return JsonResponse({'status': 'success', 'message': 'Added to waitlist'})
+        else:
+            return JsonResponse({'status': 'success', 'message': 'Already on waitlist'})
+            
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+

@@ -220,16 +220,13 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
 
 
-sentry_sdk.init(
-    dsn=os.getenv('SENTRY_DSN'), 
-    integrations=[DjangoIntegration()],
-    
-    
-    traces_sample_rate=1.0,
-    
-   
-    send_default_pii=True
-)
+if not DEBUG:  
+    sentry_sdk.init(
+        dsn=os.getenv('SENTRY_DSN'),
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True
+    )
 
 LOGIN_URL = 'users:home'
 
@@ -238,7 +235,18 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 
-MAINTENANCE_MODE = env.bool('MAINTENANCE_MODE', default=False)
+
+MAINTENANCE_MODE = os.environ.get('MAINTENANCE_MODE', 'False') == 'True'
+
 MAINTENANCE_MODE_IGNORE_ADMIN_SITE = True
 MAINTENANCE_MODE_IGNORE_SUPERUSER = True
 MAINTENANCE_MODE_IGNORE_STAFF = True
+
+MAINTENANCE_MODE_IGNORE_URLS = (
+    r'/admin/',
+    r'/users/waitlist-signup/',
+    r'/static/',
+    r'/media/',
+)
+
+MAINTENANCE_MODE_IGNORE_TESTS = True
